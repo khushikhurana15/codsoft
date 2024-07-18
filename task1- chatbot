@@ -1,0 +1,30 @@
+import numpy as np
+import nltk
+impprt spacy
+
+# Define 
+rules = {
+    "hello": "Hi! How can I help you today?",
+    "hi": "Hello! How can I help you today?",
+    "how are you": "I'm doing great, thanks! How about you?",
+    "what is your name": "My name is Charlie, nice to meet you!",
+    "goodbye": "See you later! Have a great day!",
+}
+
+def respond(user_input):
+    # Convert user input to lowercase
+    user_input = user_input.lower()
+    
+    # Check if the user input matches any of the rules
+    for rule in rules:
+        if rule in user_input:
+            return rules[rule]
+    
+    # If no rule matches, return the default response
+    return rules["default"]
+
+# Create a simple chatbot interface
+while True:
+    user_input = input("You: ")
+    response = respond(user_input)
+    print("Charlie: " + response)
