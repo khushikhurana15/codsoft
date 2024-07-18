@@ -1,0 +1,44 @@
+import numpy as np
+
+# Example item features (movie genres)
+item_features = {
+    'movie1': ['action', 'adventure'],
+    'movie2': ['drama', 'romance'],
+    'movie3': ['comedy', 'romance'],
+    'movie4': ['action', 'thriller'],
+    'movie5': ['comedy', 'family']
+}
+
+# Example user-item interaction (binary liked/not liked)
+user_item_interactions = {
+    'user1': ['movie1', 'movie3', 'movie4'],
+    'user2': ['movie2', 'movie3', 'movie5'],
+    'user3': ['movie1', 'movie2', 'movie5']
+}
+
+# Function to recommend items to a user
+def recommend_items(user, item_features, user_item_interactions, num_recommendations=3):
+    user_interactions = user_item_interactions[user]
+    all_items = list(item_features.keys())
+    recommendations = []
+
+    # Calculate item similarities based on Jaccard index
+    for item in all_items:
+        if item not in user_interactions:
+            # Calculate Jaccard similarity between user's interactions and current item
+            intersection = len(set(user_interactions).intersection(item_features[item]))
+            union = len(set(user_interactions).union(item_features[item]))
+            similarity = intersection / union if union != 0 else 0.0
+            recommendations.append((item, similarity))
+
+    # Sort recommendations by similarity and select top recommendations
+    recommendations.sort(key=lambda x: x[1], reverse=True)
+    return recommendations[:num_recommendations]
+
+# Example usage
+user = 'user1'
+recommended_items = recommend_items(user, item_features, user_item_interactions)
+print("Recommendations for", user, ":")
+for item, similarity in recommended_items:
+    print(item)
+
